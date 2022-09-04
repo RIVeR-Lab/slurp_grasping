@@ -24,6 +24,7 @@ from utils import SpectralData, train_epochs
 from models import MLP, Simple1DCNN, FusedNet
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split, cross_val_score, KFold, LeaveOneOut
+import argparse
 
 
 
@@ -109,7 +110,13 @@ def spectral_calibration(reading):
     t = np.clip(t,-2,2)
     return t
 
-def main():
+def main(args):
+    # spectral_data = np.random.rand(1,304)
+    # raw_data = pd.read_csv('/home/slurp/git/slurp_demo/slurp_grasping/data/J14.csv').to_numpy()
+    # raw_data = raw_data[0,:-5].astype(int).reshape((1,-1))
+
+    raw_data = np.load(args.spectral_data_path)
+    print(raw_data.shape)
     # Acquire a single sample <<TODO>>
     # 304 length vector, 288 from hamamatsu, 16 from mantispectra
     num_contents = 18
@@ -117,10 +124,10 @@ def main():
     num_containers = 9
     model_containers, device = build_network('mlp',304,num_containers)
     # Load model weights
-    model_contents.load_state_dict(torch.load('./weights/all_contents__mlp_best.wts'))
+    model_contents.load_state_dict(torch.load('./weights/all_contents__mlp_best.wts', map_location=torch.device(device)))
     model_contents.to(device)
     model_contents.eval()
-    model_containers.load_state_dict(torch.load('./weights/all_containers__mlp_best.wts'))
+    model_containers.load_state_dict(torch.load('./weights/all_containers__mlp_best.wts', map_location=torch.device(device)))
     model_containers.to(device)
     model_containers.eval()
     # Load label encoder
@@ -130,7 +137,7 @@ def main():
     le_containers.classes_ = np.load(f'./weights/label_encoder_class_all_containers.npy')
     while True:
         with torch.no_grad():
-            data = torch.tensor(spectral_calibration(np.random.rand(1,304)))
+            data = torch.tensor(spectral_calibration(raw_data))
             # Create model
             eval_single(model_contents,data,device,le_contents)
             eval_single(model_containers,data,device,le_containers)
@@ -138,4 +145,8 @@ def main():
             time.sleep(1)
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Save spectral data')
+    parser.add_argument('--spectral-data-path', type=str, default='../demo_test_data/spectral_data.npy',
+                        help='port path for Spectrapod spectrometer')
+    args = parser.parse_args()
+    main(args)
