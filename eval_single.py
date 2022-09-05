@@ -116,6 +116,7 @@ def main(args):
     # raw_data = raw_data[0,:-5].astype(int).reshape((1,-1))
 
     raw_data = np.load(args.spectral_data_path)
+    # raw_data = np.load('/home/slurp/git/slurp_demo/demo_test_data/J1_test.npy')
     print(raw_data.shape)
     # Acquire a single sample <<TODO>>
     # 304 length vector, 288 from hamamatsu, 16 from mantispectra
