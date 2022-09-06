@@ -3,6 +3,7 @@ import os
 import csv
 import typing
 import os
+import pickle as pk
 import time
 import torch
 import joblib
@@ -87,6 +88,7 @@ def eval_single(model: nn.Module, data: torch.tensor, device: str, le: preproces
     pred_label = torch.argmax(output, dim=1, keepdim=False).cpu()
     print(pred_label)
     print(f'Predicted Class: {le.inverse_transform(pred_label)}')
+    return le.inverse_transform(pred_label)[0].lower()
 
 
 # Read in calibration data
@@ -111,37 +113,33 @@ def spectral_calibration(reading):
     return t
 
 def main(args):
-    # spectral_data = np.random.rand(1,304)
-    # raw_data = pd.read_csv('/home/slurp/git/slurp_demo/slurp_grasping/data/J14.csv').to_numpy()
-    # raw_data = raw_data[0,:-5].astype(int).reshape((1,-1))
-
-    raw_data = np.load(args.spectral_data_path)
-    print(raw_data.shape)
-    # Acquire a single sample <<TODO>>
+    raw_data = spectral_calibration(np.load(args.spectral_data_path))
     # 304 length vector, 288 from hamamatsu, 16 from mantispectra
-    num_contents = 18
-    model_contents, device = build_network('mlp',304,num_contents)
+    num_contents = 12
+    model_contents, device = build_network('mlp',304,num_contents,hidden_layers=(50,))
     num_containers = 9
-    model_containers, device = build_network('mlp',304,num_containers)
-    # Load model weights
-    model_contents.load_state_dict(torch.load('./weights/all_contents__mlp_best.wts', map_location=torch.device(device)))
-    model_contents.to(device)
-    model_contents.eval()
+    model_containers, device = build_network('mlp',304,num_containers,hidden_layers=(50,50))
     model_containers.load_state_dict(torch.load('./weights/all_containers__mlp_best.wts', map_location=torch.device(device)))
     model_containers.to(device)
     model_containers.eval()
     # Load label encoder
-    le_contents = preprocessing.LabelEncoder()
-    le_contents.classes_ = np.load(f'./weights/label_encoder_class_all_contents.npy')
     le_containers = preprocessing.LabelEncoder()
     le_containers.classes_ = np.load(f'./weights/label_encoder_class_all_containers.npy')
     while True:
         with torch.no_grad():
-            data = torch.tensor(spectral_calibration(raw_data))
+            data = torch.tensor(raw_data)
+            # Get the container
+            container = eval_single(model_containers,data,device,le_containers)
+            # From the contianer run the most likely content
+            print(container)
             # Create model
-            eval_single(model_contents,data,device,le_contents)
-            eval_single(model_containers,data,device,le_containers)
+            model_contents.load_state_dict(torch.load(f'./weights/all_contents_{container}__mlp_best.wts', map_location=torch.device(device)))
+            model_contents.to(device)
+            model_contents.eval()
+            le_contents = preprocessing.LabelEncoder()
+            le_contents.classes_ = np.load(f'./weights/label_encoder_class_all_contents_{container}.npy')
             print('=============')
+            contents = eval_single(model_contents,data,device,le_contents)
             time.sleep(1)
 
 if __name__ == '__main__':
