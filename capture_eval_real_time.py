@@ -1,9 +1,9 @@
 # Main imports
-from curses import raw
 import os
 import csv
 import typing
 import os
+import pickle as pk
 import time
 import torch
 import joblib
@@ -27,7 +27,6 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split, cross_val_score, KFold, LeaveOneOut
 import argparse
 from code.demo.spect import SpectrometerDriver
-
 
 
 def build_network(architecture: str, input_size: int, classes: int, hidden_layers: Tuple=(256,128)) -> nn.Module:
@@ -89,6 +88,7 @@ def eval_single(model: nn.Module, data: torch.tensor, device: str, le: preproces
     pred_label = torch.argmax(output, dim=1, keepdim=False).cpu()
     print(pred_label)
     print(f'Predicted Class: {le.inverse_transform(pred_label)}')
+    return le.inverse_transform(pred_label)[0].lower()
 
 
 # Read in calibration data
@@ -114,48 +114,48 @@ def spectral_calibration(reading):
 
 def main(args, spect_controller):
 
-    # Acquire a single sample <<TODO>>
+
     # 304 length vector, 288 from hamamatsu, 16 from mantispectra
-    num_contents = 18
-    model_contents, device = build_network('mlp',304,num_contents)
+    num_contents = 12
+    model_contents, device = build_network('mlp',304,num_contents,hidden_layers=(50,))
     num_containers = 9
-    model_containers, device = build_network('mlp',304,num_containers)
-    # Load model weights
-    model_contents.load_state_dict(torch.load('./weights/all_contents__mlp_best.wts', map_location=torch.device(device)))
-    model_contents.to(device)
-    model_contents.eval()
+    model_containers, device = build_network('mlp',304,num_containers,hidden_layers=(50,50))
     model_containers.load_state_dict(torch.load('./weights/all_containers__mlp_best.wts', map_location=torch.device(device)))
     model_containers.to(device)
     model_containers.eval()
     # Load label encoder
-    le_contents = preprocessing.LabelEncoder()
-    le_contents.classes_ = np.load(f'./weights/label_encoder_class_all_contents.npy')
     le_containers = preprocessing.LabelEncoder()
     le_containers.classes_ = np.load(f'./weights/label_encoder_class_all_containers.npy')
-
+    
     save_samples = []
     while True:
         raw_data = spect_controller.get_data()
 
         with torch.no_grad():
-            data = torch.tensor(spectral_calibration(raw_data))
+            data = spectral_calibration(torch.tensor(raw_data))
+            # Get the container
+            container = eval_single(model_containers,data,device,le_containers)
+            # From the contianer run the most likely content
+            print(container)
             # Create model
-            eval_single(model_contents,data,device,le_contents)
-            eval_single(model_containers,data,device,le_containers)
+            model_contents.load_state_dict(torch.load(f'./weights/all_contents_{container}__mlp_best.wts', map_location=torch.device(device)))
+            model_contents.to(device)
+            model_contents.eval()
+            le_contents = preprocessing.LabelEncoder()
+            le_contents.classes_ = np.load(f'./weights/label_encoder_class_all_contents_{container}.npy')
             print('=============')
+            contents = eval_single(model_contents,data,device,le_contents)
             time.sleep(1)
-        
 
-        save_samples.append(raw_data)
-        if len(save_samples) == 5:
-            spect_controller.save_spectral_data(save_samples, args.spectral_data_path)
-            print()
-            print("FIVE SAMPLES SAVED")
-            print()
-            input("Press Enter to continue spectral sample collection...")
-
+            save_samples.append(raw_data)
+            if len(save_samples) == 5:
+                spect_controller.save_spectral_data(save_samples, args.spectral_data_path)
+                print()
+                print("FIVE SAMPLES SAVED")
+                print()
+                input("Press Enter to continue spectral sample collection...")
+    
     spect_controller.shutdown()
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Save spectral data')
