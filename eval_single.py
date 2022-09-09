@@ -130,7 +130,7 @@ def main(args):
             data = torch.tensor(raw_data)
             # Get the container
             container = eval_single(model_containers,data,device,le_containers)
-            # From the contianer run the most likely content
+            # From the container run the most likely content
             print(container)
             # Create model
             model_contents.load_state_dict(torch.load(f'./weights/all_contents_{container}__mlp_best.wts', map_location=torch.device(device)))
