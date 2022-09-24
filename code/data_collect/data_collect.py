@@ -50,7 +50,8 @@ for i in range(num_samples):
     tof_dist = tof.get_distance()
     print(tof_dist)
 
-    sample = np.concatenate((hama_sample, spectra_sample, [tof_dist]))
+    # sample = np.concatenate((hama_sample, spectra_sample, [tof_dist]))
+    sample = np.concatenate((hama_sample, spectra_sample))
     # print(sample)
 
     samples.append(sample)
