@@ -22,14 +22,14 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 from torch.utils.tensorboard import SummaryWriter
 from utils import SpectralData, train_epochs
-from models import MLP, Simple1DCNN, FusedNet
+from models import MLP, Simple1DCNN, FusedNet, ContNet
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split, cross_val_score, KFold, LeaveOneOut
 import argparse
 from code.demo.spect import SpectrometerDriver
 
 
-def build_network(architecture: str, input_size: int, classes: int, hidden_layers: Tuple=(256,128)) -> nn.Module:
+def build_network(input_size: int, num_containers: int, num_contents: int, hidden_layers_l1: Tuple=(256,128), hidden_layers_l2: Tuple=(256,128)) -> Tuple[nn.Module,str]:
     '''
     Generate a train able neural network architecture
     
@@ -42,33 +42,18 @@ def build_network(architecture: str, input_size: int, classes: int, hidden_layer
     Returns:
         nn.Module: Model architecture
     '''
-    D = input_size
-    print(f'D: {D}')
-    K = classes
-    print(f'K: {K}')
 
     # find device to train on
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f'Using {device} device')
 
-    # use model that did well in cross val
-    if architecture == 'mlp':
-        num_perceptrons = hidden_layers
-        num_hidden_layers = len(num_perceptrons)
-        use_dropout = True
-        model = MLP(D, K, num_hidden_layers, num_perceptrons, 
-                    use_dropout).to(device).double()
-    elif architecture == '1DCNN':
-        use_dropout = True
-        model = Simple1DCNN(D, K, use_dropout).to(device).double()
-    else:
-        raise NotImplementedError("Unsupported network architecture")
-        
+    model = ContNet(input_size, num_containers, num_contents, hidden_layers_l1, hidden_layers_l2)
+    
     return model, device
 
 
 # Create a dummy array here
-def eval_single(model: nn.Module, data: torch.tensor, device: str, le: preprocessing.LabelEncoder) -> None:
+def eval_single(model: nn.Module, data: torch.tensor, device: str, le_contents, le_containers) -> None:
     '''
     Calculate test accuracy using held-out dataset
     Args: 
@@ -81,15 +66,19 @@ def eval_single(model: nn.Module, data: torch.tensor, device: str, le: preproces
     '''
     # Evaluate model on held out test set
     model.train(False)
-    inputs = data.to(device)
-    output = model(inputs.double())
-    print(output)
-    # calculate accuracy
-    pred_label = torch.argmax(output, dim=1, keepdim=False).cpu()
-    print(pred_label)
-    print(f'Predicted Class: {le.inverse_transform(pred_label)}')
-    return le.inverse_transform(pred_label)[0].lower()
 
+    inputs = data.to(device)
+    container_out, content_out = model(inputs)
+
+    m = nn.Softmax(dim=1)
+
+    # calculate accuracy
+    pred_containers = torch.argmax(container_out, dim=1, keepdim=False).cpu()
+    pred_contents = torch.argmax(content_out, dim=1, keepdim=False).cpu()
+    print(sorted(zip(le_containers.classes_,m(container_out).cpu().numpy()[0,:]), key=lambda x: x[1], reverse=True)[:3])
+    print(f'Predicted Container Class: {le_containers.inverse_transform(pred_containers)}')
+    print(sorted(zip(le_contents.classes_,m(content_out).cpu().numpy()[0,:]), key=lambda x: x[1], reverse=True)[:3])
+    print(f'Predicted Contents Class: {le_contents.inverse_transform(pred_contents)}')
 
 # Read in calibration data
 hamamatsu_dark = np.median(pd.read_csv('./calibration/hamamatsu_black_ref.csv').to_numpy().astype(np.int32), axis=0)
@@ -98,8 +87,8 @@ mantispectra_dark = np.median(pd.read_csv('./calibration/mantispectra_black_ref.
 mantispectra_white = np.median(pd.read_csv('./calibration/mantispectra_white_ref.csv').to_numpy()[:,:-5].astype(np.int32), axis=0)
 
 # Create composite calibration file
-white_ref = np.concatenate((hamamatsu_white, mantispectra_white))
-dark_ref = np.concatenate((hamamatsu_dark, mantispectra_dark))
+white_ref = np.concatenate((hamamatsu_white, mantispectra_white))[1:]
+dark_ref = np.concatenate((hamamatsu_dark, mantispectra_dark))[1:]
 
 # Create calibration function
 def spectral_calibration(reading):
@@ -116,35 +105,51 @@ def main(args, spect_controller):
 
 
     # 304 length vector, 288 from hamamatsu, 16 from mantispectra
-    num_contents = 12
-    model_contents, device = build_network('mlp',304,num_contents,hidden_layers=(50,))
-    num_containers = 9
-    model_containers, device = build_network('mlp',304,num_containers,hidden_layers=(50,50))
-    model_containers.load_state_dict(torch.load('./weights/all_containers__mlp_best.wts', map_location=torch.device(device)))
-    model_containers.to(device)
-    model_containers.eval()
+    num_containers = 6
+    num_contents = 13
+    model, device = build_network(606, num_containers, num_contents, hidden_layers_l1=(200,100,50), hidden_layers_l2=(200,100,50))
+    model.load_state_dict(torch.load('./weights/cont_net_with_ibuprofen.wts', map_location=torch.device(device)))
+    model.to(device)
+
+    model.eval()
     # Load label encoder
+    # le_containers = preprocessing.LabelEncoder()
+    # le_containers.classes_ = np.load(f'./weights/label_encoder_class_all_containers.npy')
+
+    # raw_datum = np.load('/home/slurp/git/slurp_demo/slurp_grasping/demo_real_time_data/K11_rt_test.npy')
+
+
+# Fit labels to model|
+    le_contents = preprocessing.LabelEncoder()
     le_containers = preprocessing.LabelEncoder()
-    le_containers.classes_ = np.load(f'./weights/label_encoder_class_all_containers.npy')
+    
+    le_contents.classes_ = np.load('./weights/label_encoder_class_fusion_contents.npy')
+    le_containers.classes_ = np.load('./weights/label_encoder_class_fusion_containers.npy')
     
     save_samples = []
+    count = 0
     while True:
+        
         raw_data = spect_controller.get_data()
+        # raw_data = raw_datum[count]
+        # count += 1
 
         with torch.no_grad():
-            data = spectral_calibration(torch.tensor(raw_data))
+            data = spectral_calibration(raw_data[:,1:])
+            data = torch.Tensor(np.hstack((data,np.gradient(data,axis=1))))
+            print(len(data))
             # Get the container
-            container = eval_single(model_containers,data,device,le_containers)
+            eval_single(model, data, device, le_contents, le_containers)
             # From the contianer run the most likely content
-            print(container)
-            # Create model
-            model_contents.load_state_dict(torch.load(f'./weights/all_contents_{container}__mlp_best.wts', map_location=torch.device(device)))
-            model_contents.to(device)
-            model_contents.eval()
-            le_contents = preprocessing.LabelEncoder()
-            le_contents.classes_ = np.load(f'./weights/label_encoder_class_all_contents_{container}.npy')
-            print('=============')
-            contents = eval_single(model_contents,data,device,le_contents)
+            # print(container)
+            # # Create model
+            # model_contents.load_state_dict(torch.load(f'./weights/all_contents_{container}__mlp_best.wts', map_location=torch.device(device)))
+            # model_contents.to(device)
+            # model_contents.eval()
+            # le_contents = preprocessing.LabelEncoder()
+            # le_contents.classes_ = np.load(f'./weights/label_encoder_class_all_contents_{container}.npy')
+            # print('=============')
+            # contents = eval_single(model_contents,data,device,le_contents)
             time.sleep(1)
 
             save_samples.append(raw_data)
