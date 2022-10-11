@@ -1,6 +1,6 @@
 # SLURP!
 
-### Spectroscopy of Liquids Using Robot Pre-Touch Sensing
+### **S**pectroscopy of **L**iquids **U**sing **R**obot **P**re-Touch Sensing
 
 ![SLURP robot with gripper and scene of table items](./img/slurp_spread.png)
 
