@@ -7,7 +7,7 @@
 A collaborative effort between the RIVeR lab @ Northeastern University and the RCHI Lab @ Carnegie Mellon University.
 
 ### TLDR;
-For more detailed instruction, please see the associated [project website](#TODO) and [manuscript](https://arxiv.org/abs/2210.04941).
+For more detailed instruction, please see the associated [project website](https://river-lab.github.io/slurp_grasping/) and [manuscript](https://arxiv.org/abs/2210.04941).
 
 We welcome the use of this dataset and code in your work. If you do use our code/data, please include the following citation:
 ```
