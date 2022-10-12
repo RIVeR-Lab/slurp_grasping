@@ -8,39 +8,13 @@ parent: Getting Started
 
 To gather data from serial without ROS you will need the following libraries:
 
-1. Pyserial
 ```bash
-python -m pip install pyserial
+python3 -m pip install pyserial numpy pandas matplotlib
 ```
 or
 ```bash
-conda install pyserial
+conda install pyserial numpy pandas matplotlib
 ```
-2. Numpy
-```bash
-pip install numpy
-```
-or
-```bash
-conda install numpy
-```
-3. Pandas
-```bash
-pip install pandas
-```
-or
-```bash
-conda install pandas
-```
-4. Matplotlib
-```bash
-pip install matplotlib
-```
-or
-```bash
-conda install matplotlib
-```
-
 
 ### Using the Spectrometers
 {: .note }
@@ -50,7 +24,7 @@ cd slurp_grasping/code/data_collect
 ```
 For the OEM Sensing Board
 ```bash
-python spectrapod_new.py
+python3 spectrapod_new.py
 ```
 For the C12880MA
 ```bash
