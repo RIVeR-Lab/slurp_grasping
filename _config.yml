@@ -20,11 +20,11 @@ callouts:
 
 aux_links:
   "Slurp on GitHub":
-    - "//github.com/Wesleylewis05/Tests"
+    - "https://github.com/RIVeR-Lab/slurp_grasping/tree/main"
 
 nav_external_links:
   - title: Slurp on GitHub
-    url: https://github.com/Wesleylewis05/Tests
+    url: https://github.com/RIVeR-Lab/slurp_grasping/tree/main
 
 back_to_top: true
 back_to_top_text: "Back to top"

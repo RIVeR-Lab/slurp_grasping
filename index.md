@@ -68,7 +68,7 @@ associated physical gripper assembly.
 </div>
 
   <p>
-    <a href="https://github.com/Wesleylewis05/Tests">Link to the Github</a>
+    <a href="https://github.com/RIVeR-Lab/slurp_grasping/tree/main">Link to the Github</a>
   </p>
 </body>
 </html>
