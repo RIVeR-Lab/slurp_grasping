@@ -20,13 +20,13 @@ permalink: /
       <h1>SLURP! Spectroscopy of Liquids Using Robot Pre-Touch Sensing</h1>
     </div>
     <div class="names">
-      <p><strong><a href="https://nhanson.io/">Nathaniel Hanson<sup>1</sup></a>, Wesley Lewis<sup>2</sup>, <a href="https://kpputhuveetil.github.io/" >Kavya Puthuveetil<sup>2</sup></a>, Donelle Furline<sup>1</sup>, <a href="https://akhilpadmanabha.github.io/">Akhil Padmanabha<sup>2</sup></a>, <a href="https://www.tpadir.info/">Taşkin Padir<sup>1</sup> </a>, <a href="https://zackory.com/">Zackory Erickson<sup>2</sup></a></strong></p>
+      <p><strong><a href="https://nhanson.io/">Nathaniel Hanson<sup>1* </sup></a>, Wesley Lewis<sup>2*</sup>, <a href="https://kpputhuveetil.github.io/" >Kavya Puthuveetil<sup>2</sup></a>, Donelle Furline<sup>1</sup>, <a href="https://akhilpadmanabha.github.io/">Akhil Padmanabha<sup>2</sup></a>, <a href="https://www.tpadir.info/">Taşkin Padir<sup>1</sup> </a>, <a href="https://zackory.com/">Zackory Erickson<sup>2</sup></a></strong></p>
       <p style="text-align: center;"><strong>Northeastern University<sup>1</sup>, Carnegie Mellon<sup>2</sup></strong></p></div>
   </div>
 
   <div>
-    <div style="text-align: center;">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/EFyeUmdglbE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div style="position:relative;padding-top:56.25%;">
+      <iframe src="https://www.youtube.com/embed/EFyeUmdglbE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
     </div>
   </div>
   <h2>Abstract</h2>
@@ -54,6 +54,7 @@ permalink: /
   infer the liquids inside of containers, without needing to open
   or manipulate the containers.
   </p>
+ 
 <div style="text-align: center;">
   <figure>
   
@@ -72,3 +73,20 @@ associated physical gripper assembly.
   </p>
 </body>
 </html>
+∗These authors contributed equally
+### [ArXiv Link](https://arxiv.org/abs/2210.04941)
+### Bibtex
+ ```
+@misc{https://doi.org/10.48550/arxiv.2210.04941,
+  doi = {10.48550/ARXIV.2210.04941},
+  url = {https://arxiv.org/abs/2210.04941},
+  author = {Hanson, Nathaniel and Lewis, Wesley and Puthuveetil, Kavya and Furline, Donelle and Padmanabha, Akhil and Padır, Taşkın and Erickson, Zackory},
+  keywords = {Robotics (cs.RO), Signal Processing (eess.SP), FOS: Computer and information sciences, FOS: Computer and information sciences, FOS: Electrical engineering, electronic engineering, information engineering},
+  title = {SLURP! Spectroscopy of Liquids Using Robot Pre-Touch Sensing},
+  publisher = {arXiv},
+  year = {2022},
+  copyright = {Creative Commons Attribution 4.0 International}
+}
+
+```
+Correspondence: hanson [.] n [@] northeastern [.] edu
