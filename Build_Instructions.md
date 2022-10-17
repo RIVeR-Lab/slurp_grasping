@@ -61,13 +61,13 @@ Instructions for building the SLURP Gripper
 
 13. Replace the two paddles on the Reactor Wrist with the sensor and reflectance tile grippers.<IMG SRC="images/assembly_12.jpg">
 
-14. Thread the SMA bulkhead adapter through the lid of the spectrometer box. Using M2.0 heat-set inserts to into the box<IMG SRC="images/assembly_box.jpg">
+14. Thread the SMA bulkhead adapter through the lid of the spectrometer box. Using M2.0 heat-set inserts to into the box<IMG SRC="images/assembly_box.png">
 
 15. Using the wiring guide [here](https://github.com/groupgets/c12880ma/blob/master/arduino_c12880ma_example/arduino_c12880ma_example.ino) connect the second Arduino Nano to the Hamamatsu spectrometer breakout board.
 
-16. Adhere the Hamamatsu spectrometer and Arduino nano inside the box. Align the aperture of the spectrometer with the opening on the SMA connector. Attach the lid using the M2.0 bolts.<IMG SRC="images/assembly_box.jpg">
+16. Adhere the Hamamatsu spectrometer and Arduino nano inside the box. Align the aperture of the spectrometer with the opening on the SMA connector. Attach the lid using the M2.0 bolts.<IMG SRC="images/assembly_box.png">
 
-17. Attach the fiber optic patch cable from the gripper to the box by screwing on the SMA connectors.<IMG SRC="images/assembly_final">
+17. Attach the fiber optic patch cable from the gripper to the box by screwing on the SMA connectors.<IMG SRC="images/assembly_final.png">
 
 ## Final instructions
 Upload the Arduino sketches from the GitHub repo onto the gripper and ToF Arduino Nano devices. Connect each of the Nanos and the Mantispectra boards to the computer with USB cables.
