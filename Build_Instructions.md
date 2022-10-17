@@ -33,10 +33,9 @@ Instructions for building the SLURP Gripper
 
 ## Assembly Instructions
 
-1. Using the CAD files in the GitHub repo, print the gripper paddles. Onyx is recommended for rigidity. The reflectance tile gripper is on the left; the sensor gripper on the right. <p><IMG SRC="images/assembly_1.jpg"></p>
+1. Using the CAD files in the GitHub repo, print the gripper paddles. Onyx is recommended for rigidity. The reflectance tile gripper is on the left; the sensor gripper on the right. <IMG SRC="images/assembly_1.jpg">
 
-2. Cut a 218mm piece of the Teflon bar and press fit into the cavity on the reflectance tile gripper paddle.
-<p><IMG SRC="images/assembly_2.jpg"></p>
+2. Cut a 218mm piece of the Teflon bar and press fit into the cavity on the reflectance tile gripper paddle. <IMG SRC="images/assembly_2.jpg">
 
 3. Take the reflector and add a thin bead of epoxy to its bottom. Press into the gripper.
 <p><IMG SRC="images/assembly_3.jpg"></p>
@@ -51,6 +50,7 @@ Instructions for building the SLURP Gripper
 <p><IMG SRC="images/assembly_6.jpg"></p>
 
 7. Connect the TOF to the Arduino Nano using the jumper cables.
+<p><IMG SRC="images/assembly_6b.jpg"></p>
 
 8. Bolt the TOF sensor into the gripper assembly.
 <p><IMG SRC="images/assembly_7.jpg"></p>
@@ -70,6 +70,9 @@ Instructions for building the SLURP Gripper
 13. Replace the two paddles on the Reactor Wrist with the sensor and reflectance tile grippers.
 <p><IMG SRC="images/assembly_12.jpg"></p>
 
-14. Thread the 
+14. Thread the SMA bulkhead adapter through the lid of the spectrometer box.
+
+15. Attach the fiber optic patch cable from the gripper to the box by screwing on the SMA connectors.
+
 ## Final instructions
 Upload the Arduino sketches from the GitHub repo onto the gripper and ToF Arduino Nano devices. Connect each of the Nanos and the Mantispectra boards to the computer with USB cables.
