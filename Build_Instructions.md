@@ -3,7 +3,7 @@ title: Build Instructions
 layout: default
 ---
 
-# Build_Instructions
+# Build Instructions
 Instructions for building the SLURP Gripper
 
 <p><IMG SRC="images/Other_Gripper_Video_V1_AdobeExpress.gif"></p>
