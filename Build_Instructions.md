@@ -65,7 +65,7 @@ Instructions for building the SLURP Gripper
 
 15. Using the wiring guide [here](https://github.com/groupgets/c12880ma/blob/master/arduino_c12880ma_example/arduino_c12880ma_example.ino) connect the second Arduino Nano to the Hamamatsu spectrometer breakout board.
 
-16. Adhere the Hamamatsu spectrometer and Arduino nano inside the box. Align the aperture of the spectrometer with the opening on the SMA connector. Attach the lid using the M2.0 bolts.<IMG SRC="images/assembly_box.png">
+16. Adhere the Hamamatsu spectrometer and Arduino nano inside the box. Align the aperture of the spectrometer with the opening on the SMA connector. Attach the lid using the M2.0 bolts.<IMG SRC="images/assembly_wiring.png">
 
 17. Attach the fiber optic patch cable from the gripper to the box by screwing on the SMA connectors.<IMG SRC="images/assembly_final.png">
 
