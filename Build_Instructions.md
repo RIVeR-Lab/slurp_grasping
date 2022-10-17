@@ -1,10 +1,13 @@
 ---
-title: Build_Instructions
+title: Build Instructions
 layout: default
 ---
 
 # Build_Instructions
 Instructions for building the SLURP Gripper
+
+<p><IMG SRC="images/Other_Gripper_Video_V1_AdobeExpress.gif"></p>
+{: .highlight }
 
 ## Required Parts
 
@@ -15,7 +18,7 @@ Instructions for building the SLURP Gripper
 | Breadboard Jumper Wires | 1 Package | https://www.amazon.com/EDGELEC-Breadboard-1pin-1pin-Connector-Multicolored/dp/B07GD312VG |
 | Wide Angle Reflector   | 1 | https://www.digikey.com/en/products/detail/carclo-technical-plastics/10170/2641626 |
 | Quartz Tungsten Halogen Bulb | 1 | https://www.thorlabs.com/thorproduct.cfm?partnumber=QTH10B|
-| SMA Bulkhead Adapter | 1 | https://www.thorlabs.com |/thorproduct.cfm?partnumber=HASMA |
+| SMA Bulkhead Adapter | 1 | https://www.thorlabs.com/thorproduct.cfm?partnumber=HASMA |
 | SMA Fiber Adapter | 1 | https://www.thorlabs.com/thorproduct.cfm?partnumber=SM1SMA |
 | Fiber Optic Cable | 1 | https://www.thorlabs.com/thorproduct.cfm?partnumber=M59L01 |
 | Time of Flight Sensor | 1 | https://learn.adafruit.com/adafruit-vl53l4cd-time-of-flight-distance-sensor |
@@ -26,6 +29,8 @@ Instructions for building the SLURP Gripper
 | M2.5 Bolts | 1 Package | https://www.mcmaster.com/91292A010 |
 | M1.6 Bolts | 1 Package | https://www.mcmaster.com/91292A263 |
 
+## Assembly Instructions
 
-<p><IMG SRC="images/Other_Gripper_Video_V1_AdobeExpress.gif"></p>
-{: .highlight }
+1. Using the CAD files in the GitHub repo, print the gripper paddles. Onyx is recommended for rigidity.
+
+![step one](images/assembly_1.jpg)
