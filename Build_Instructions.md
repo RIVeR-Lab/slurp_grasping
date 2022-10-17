@@ -33,4 +33,23 @@ Instructions for building the SLURP Gripper
 
 1. Using the CAD files in the GitHub repo, print the gripper paddles. Onyx is recommended for rigidity.
 
-![step one](images/assembly_1.jpg)
+<p><IMG SRC="images/assembly_1.jpg"></p>
+
+<p><IMG SRC="images/assembly_2.jpg"></p>
+
+<p><IMG SRC="images/assembly_3.jpg"></p>
+
+<p><IMG SRC="images/assembly_4.jpg"></p>
+
+<p><IMG SRC="images/assembly_5.jpg"></p>
+
+<p><IMG SRC="images/assembly_6.jpg"></p>
+
+<p><IMG SRC="images/assembly_7.jpg"></p>
+
+<p><IMG SRC="images/assembly_8.jpg"></p>
+
+<p><IMG SRC="images/assembly_9.jpg"></p>
+<p><IMG SRC="images/assembly_10.jpg"></p>
+<p><IMG SRC="images/assembly_11.jpg"></p>
+<p><IMG SRC="images/assembly_12.jpg"></p>
