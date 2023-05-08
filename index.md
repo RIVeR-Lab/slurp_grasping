@@ -20,7 +20,7 @@ permalink: /
       <h1>SLURP! Spectroscopy of Liquids Using Robot Pre-Touch Sensing</h1>
     </div>
     <div class="names">
-      <p><strong><a href="https://nhanson.io/">Nathaniel Hanson<sup>1* </sup></a>, Wesley Lewis<sup>2*</sup>, <a href="https://kpputhuveetil.github.io/" >Kavya Puthuveetil<sup>2</sup></a>, Donelle Furline<sup>1</sup>, <a href="https://akhilpadmanabha.github.io/">Akhil Padmanabha<sup>2</sup></a>, <a href="https://www.tpadir.info/">Taşkin Padir<sup>1</sup> </a>, <a href="https://zackory.com/">Zackory Erickson<sup>2</sup></a></strong></p>
+      <p><strong><a href="https://nhanson.io/">Nathaniel Hanson<sup>1* </sup></a>, Wesley Lewis<sup>2*</sup>, <a href="https://kpputhuveetil.github.io/" >Kavya Puthuveetil<sup>2*</sup></a>, Donelle Furline<sup>1</sup>, <a href="https://akhilpadmanabha.github.io/">Akhil Padmanabha<sup>2</sup></a>, <a href="https://www.tpadir.info/">Taşkin Padir<sup>1</sup> </a>, <a href="https://zackory.com/">Zackory Erickson<sup>2</sup></a></strong></p>
       <p style="text-align: center;"><strong>Northeastern University<sup>1</sup>, Carnegie Mellon<sup>2</sup></strong></p></div>
   </div>
 
